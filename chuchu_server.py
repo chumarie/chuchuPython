@@ -179,24 +179,14 @@ while 1:
                 elif data == '<webcam>':
                     cap = cv2.VideoCapture(0)
                     capArray.append(cap)
-                    while(True):
-                        ret, frame = cap.read()
-                        cv2.imshow('frame',frame)
-                        if cv2.waitKey(1) & 0xFF == ord('q'):
-                            break
-                    cap.release()
+                    ret, frame = cap.read()
+                    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                    cv2.imshow('frame',gray)
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        cap.release()
                     cv2.destroyAllWindows()
                 elif data == '<test>':
-                    cap = capArray[0]
-                    capArray.append(cap)
-                    while(True):
-                        ret, frame = cap.read()
-                        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                        cv2.imshow('frame',gray)
-                        if cv2.waitKey(1) & 0xFF == ord('q'):
-                            break
-                    cap.release()
-                    cv2.destroyAllWindows()
+                    print('ok')
                 elif data:
                     history[player_maps[sock][0]-1] = history[player_maps[sock][0]-1]+'\n<'+player_maps[sock][1]+'> '+data
                     broadcast(data, sock, player_maps[sock][0])
