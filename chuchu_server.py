@@ -144,7 +144,6 @@ while 1:
                     sock.send(('Which room would you like to choose? ' + roomlist).encode())
                     user = player_maps[sock][1]
                     ind = sock.recv(4096).decode()
-                    print(ind)
                     try:
                         ind = int(ind)
                     except:
@@ -158,6 +157,7 @@ while 1:
                         continue
                     player_maps[sock][0] = ind
                     sock.send(history[ind-1].encode())
+                    print(sock.getsockname())
                     broadcast(user+' is offline', sock, prev)
                     broadcast(user+' is online', sock, ind)
                 elif data == '<available>':
