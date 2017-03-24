@@ -124,7 +124,7 @@ optionsmenu = Menu(menubar, tearoff=0)
 optionsmenu.add_command(label = 'Qui est dans cette room ?', command=available)
 optionsmenu.add_command(label="Change Chat Room", command=change)
 optionsmenu.add_command(label="active webcam", command=webcam)
-optionsmenu.add_command(label="test webcam", command=test)
+optionsmenu.add_command(label="see_ip", command=see_ip)
 menubar.add_cascade(label="Options", menu=optionsmenu)
 root.config(menu=menubar)
 menubar.config(background="pink")
@@ -135,7 +135,11 @@ response = Entry(frame1, textvariable = message)
 response.focus()
 send = Button(frame1, text='Send', command=send)
 response.pack(side=LEFT, fill=X, expand=1)
-send.pack(side=RIGHT)
+++;zs
+
+
+
+  send.pack(side=RIGHT)
 online_users = Label(root, textvariable = status, relief = SUNKEN, anchor = W)
 online_users.pack(side = BOTTOM, fill = X, expand = 1)
 root.bind('<Return>', sendonreturn)

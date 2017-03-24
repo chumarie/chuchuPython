@@ -104,7 +104,6 @@ def handle(conn):
             username = conn.recv(4096).decode()
             player_maps[conn] = [choice, username]
             conn.send(history[choice-1].encode())
-            print("ok1")
             print(history[choice-1].encode())
             broadcast(username+' est connecté', conn, choice)
         #new room
