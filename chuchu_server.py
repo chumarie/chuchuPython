@@ -23,6 +23,8 @@ server_socket.bind((host, port))
 server_socket.listen(30)
 sock_list.append(server_socket)
 
+#Function Server
+
 def broadcast(data, sock, group):
     for socket in sock_list:
         if socket != sock and socket != server_socket:
@@ -122,6 +124,7 @@ def handle(conn):
         if sock in player_maps.keys():
             del player_maps[sock]
 
+#Run if true
 while 1:
     ready_to_read, ready_to_write, in_error = select.select(sock_list,[],[])
     for sock in ready_to_read:
@@ -209,7 +212,6 @@ while 1:
                         broadcast_to_all()
                         sock.close()
                         broadcast_offline(user, group)
-                        #print(2)
             except:
                 if sock in sock_list:
                     sock_list.remove(sock)
@@ -219,4 +221,3 @@ while 1:
                     broadcast_to_all()
                     sock.close()
                     broadcast_offline(user, group)
-                #print(3)

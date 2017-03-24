@@ -1,13 +1,13 @@
 from tkinter import *
 from tkinter import scrolledtext, messagebox
 import sys, socket, select, _thread
- 
-#def connect(host, port):
+
+
 running = False
 
+#Action for command
 def send():
    data = message.get()
-   #print(data)
    try:
       s.send(data.encode())
    except:
@@ -20,8 +20,6 @@ def send():
    chat.config(state=DISABLED)
 
 def sendonreturn(event):
-   data = message.get()
-   #print(data)
    try:
       s.send(data.encode())
    except:
@@ -40,7 +38,6 @@ def receive():
          data = s.recv(4096)
          data = data.decode()
          if '<info>' in data:
-            #print('True')
             ind = data.index('\n')
             status.set('Users Online: '+data[8:ind])
             if len(data) > ind+1:
@@ -49,14 +46,12 @@ def receive():
                chat.see(END)
                chat.config(state=DISABLED)
          else:
-            #print(data)
             chat.config(state=NORMAL)
             chat.insert(END, data + '\n')
             chat.see(END)
             chat.config(state=DISABLED)
       except:
          running = False
-      #print(history.get())
 
 
 def available():
@@ -98,21 +93,18 @@ def on_closing():
       root.destroy()
 
 
+#Run Server
+
 host = '127.0.0.1'
 port = 6000
 flag = 1
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-#except :
-#   return 'Unable to connect'''
-
+#Tkinter View
 root = Tk()
 frame1 = Frame(root)
-#frame2 = Frame(root)
 frame1.pack(side=TOP, fill=BOTH, expand=1)
-#frame2.pack(side=TOP)
 root.wm_title('Chuchu Python Chat')
-#history = StringVar()
 message = StringVar()
 status = StringVar()
 
@@ -140,6 +132,8 @@ online_users = Label(root, textvariable = status, relief = SUNKEN, anchor = W)
 online_users.pack(side = BOTTOM, fill = X, expand = 1)
 root.bind('<Return>', sendonreturn)
 root.protocol("WM_DELETE_WINDOW", on_closing)
+
+#if true
 if flag == 1:
    try :
       s.connect((host, port))
