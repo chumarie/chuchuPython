@@ -13,6 +13,8 @@ sock_list = []
 player_maps = {}
 history = ['Room1:']
 capArray = []
+listId = []
+
 
 #Init socket
 server_socket = socket.socket()
@@ -77,7 +79,6 @@ def handle(conn):
         roomlist = roomlist + 'Room1 ' + 'Add Room'
         conn.send(('Choisissez votre room\n\n'+roomlist).encode())
         choice = conn.recv(4096).decode()
-        print(sock_list)
         flag = 1
         while flag:
             try:
@@ -126,6 +127,7 @@ while 1:
     for sock in ready_to_read:
         if sock == server_socket:
             sockfd, addr = server_socket.accept()
+            listId.append(addr)
             _thread.start_new_thread(handle, (sockfd,))
             print ("Client (%s, %s) connected" % addr)
         else:
@@ -177,7 +179,16 @@ while 1:
                     broadcast_offline(user, group)
                 elif data == '<webcam>':
                     cap = cv2.VideoCapture(0)
-                    print(cap)
+                    while(True):
+                        ret, frame = cap.read()
+                        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                        cv2.imshow('frame',frame)
+                        if cv2.waitKey(1) & 0xFF == ord('q'):
+                            break
+                    cap.release()
+                    cv2.destroyAllWindows()
+                elif data == '<wnb>':
+                    cap = cv2.VideoCapture(0)
                     while(True):
                         ret, frame = cap.read()
                         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -186,8 +197,6 @@ while 1:
                             break
                     cap.release()
                     cv2.destroyAllWindows()
-                elif data == '<test>':
-                    print('ok')
                 elif data:
                     history[player_maps[sock][0]-1] = history[player_maps[sock][0]-1]+'\n<'+player_maps[sock][1]+'> '+data
                     broadcast(data, sock, player_maps[sock][0])
